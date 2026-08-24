@@ -108,7 +108,17 @@ def handle_message(message):
             "কমান্ড বুঝতে পারিনি।\n\n"
             "/start লিখো।"
         )
+print("Testing Telegram connection...")
 
+test = telegram("getMe")
+
+print("Telegram API response:", test)
+
+if not test.get("ok"):
+    raise RuntimeError(f"Telegram API failed: {test}")
+
+print("Telegram connection OK")
+print("Bot:", test["result"]["username"])
 
 def main():
     offset = 0
