@@ -15,7 +15,10 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-- name: Install WebSocket dependency
-        run: pip install websockets
+- name: Show repository files
+        run: ls -la
+
+      - name: Check OTC test file
+        run: test -f otc_ws_test.py
       - name: Run live feed test
         run: python otc_ws_test.py
