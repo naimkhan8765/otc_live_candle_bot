@@ -11,15 +11,27 @@ async def main():
         async with websockets.connect(
             WS_URL,
             ping_interval=20,
-            ping_timeout=20
+            ping_timeout=20,
+            close_timeout=10
         ) as ws:
 
             print("WebSocket connected.")
-            print("Waiting for server data...")
 
-            for _ in range(20):
-                message = await asyncio.wait_for(ws.recv(), timeout=10)
-                print("RAW:", message[:500])
+            # Socket.IO connection
+            await ws.send("40")
+            print("Sent Socket.IO connect packet.")
+
+            for i in range(30):
+                try:
+                    message = await asyncio.wait_for(
+                        ws.recv(),
+                        timeout=10
+                    )
+
+                    print(f"DATA {i + 1}: {message[:1000]}")
+
+                except asyncio.TimeoutError:
+                    print("No data received in 10 seconds.")
 
     except Exception as e:
         print("WebSocket test failed:", repr(e))
